@@ -1,5 +1,3 @@
-console.log('%c HI', 'color: firebrick')
-
 function getDogImages() {
     fetch("https://dog.ceo/api/breeds/image/random/4")
     .then(response => response.json())
@@ -38,7 +36,17 @@ function addDogBreed(breed) {
     breedContainer.appendChild(li)
 }
 
+function addEventListeners() {
+    let breedContainer = document.getElementById('dog-breeds')
+    breedContainer.addEventListener('click', function(evt) {
+        if (evt.target && evt.target.matches('li')) {
+            evt.target.style.color = 'lightblue'
+        }
+    })
+}
+console.log('%c HI', 'color: firebrick')
 document.addEventListener('DOMContentLoaded', ()=>{
     getDogImages()
     getDogBreeds()
+    addEventListeners()
 })
