@@ -46,28 +46,48 @@ function matchFirstLetter(word, letter) {
     return word.charAt(0) === letter
 }
 
+function clearDogBreeds() {
+    const breedContainer = document.getElementById('dog-breeds')
+    while( breedContainer.firstChild ){
+        breedContainer.removeChild( breedContainer.firstChild );
+    }
+}
+
 function filter() {
-    
     const dogs = arrayOfBreeds()
     const letter = document.getElementById('breed-dropdown').value
     const filtered = dogs.filter(function(dog) {
         return dog.charAt(0) === letter
     })
-    
-    const breedContainer = document.getElementById('dog-breeds')
-    while( breedContainer.firstChild ){
-        breedContainer.removeChild( breedContainer.firstChild );
-    }
+    clearDogBreeds()
     filtered.map(breed => addDogBreed(breed))
 }
 
+function handleFilterEvent() {
+    const select = document.getElementById('breed-dropdown')
+    select.addEventListener('change', ()=> {
+        const restoreButton = document.createElement('button')
+        restoreButton.innerHTML = "Restore"
+        filter()
+        select.insertAdjacentElement('afterend', restoreButton)
+        restoreButton.addEventListener('click', ()=> {
+            clearDogBreeds()
+            getDogBreeds()
+            restoreButton.remove()
+            select.value = ''
+        })
+    })
+}
+
 function addEventListeners() {
+    // Change Dog breed color on click event
     const breedContainer = document.getElementById('dog-breeds')
     breedContainer.addEventListener('click', function(evt) {
         if (evt.target && evt.target.matches('li')) {
             evt.target.style.color = 'lightblue'
         }
     })
+    handleFilterEvent()
 }
 
 document.addEventListener('DOMContentLoaded', ()=>{
